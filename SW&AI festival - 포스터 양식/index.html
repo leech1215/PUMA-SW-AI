@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUMA 2024 SW/AI</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            background-color: #f4f4f4; 
+            overflow: auto; /* 스크롤 허용 */
+        }
+        .text-container {
+            flex-grow: 1; /* 텍스트 컨테이너가 가용 공간을 차지하도록 */
+            text-align: right; /* 오른쪽 정렬 */
+            padding-left: 10px; /* 이미지와 텍스트 사이의 간격 */
+        }
+        #codeContainer1 { 
+            flex: 1;
+            width: 50%; 
+            max-width: 1200px; /* max-width를 1200px로 축소 */
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+            max-height: 90vh; /* 높이 제한 추가 */
+            overflow-x: auto;
+            overflow-y: auto; /* 스크롤 허용 */
+            margin-left: 8px;
+            margin-right: 4px;
+        }
+        #codeContainer2 { 
+            flex: 1;
+            width: 50%; 
+            max-width: 1200px; /* max-width를 1200px로 축소 */
+            background: #ffffff; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+            max-height: 90vh; /* 높이 제한 추가 */
+            overflow-x: auto;
+            overflow-y: auto; /* 스크롤 허용 */
+            margin-left: 4px;
+            margin-right: 8px;
+        }
+        pre { 
+            white-space: pre-wrap; 
+            word-wrap: break-word; 
+        }
+        code { 
+            display: block; 
+            padding: 20px; 
+            background: #f1f1f1; 
+            color: #333333; 
+            overflow: auto; 
+        }
+    </style>
+</head>
+<body>
+<div id = "codeContainer1">
+<div style = "display: flex; align-items: center;">
+    <img src = "C:\Users\user\OneDrive\바탕 화면\cs101_libraries_py35\sw-ai 1031\SW\AI\SW&AI festival - 포스터 양식\기본 2 - 3.png" style = "max-width: 15%; height: auto">
+    <div class="text-container">
+        <h1>IASA PUMA 2024 SW/AI FESTIVAL</h1>
+    </div>
+</div>
+<br>
+<img src = "https://raw.githubusercontent.com/leech1215/PUMA-SW-AI/refs/heads/main/SW%26AI%20festival%20-%20%ED%8F%AC%EC%8A%A4%ED%84%B0%20%EC%96%91%EC%8B%9D/1.png" style="max-width: 100%; height: auto;">
+<img src = "https://raw.githubusercontent.com/leech1215/PUMA-SW-AI/refs/heads/main/SW%26AI%20festival%20-%20%ED%8F%AC%EC%8A%A4%ED%84%B0%20%EC%96%91%EC%8B%9D/2.png" style="max-width: 100%; height: auto;">
+<img src = "https://raw.githubusercontent.com/leech1215/PUMA-SW-AI/refs/heads/main/SW%26AI%20festival%20-%20%ED%8F%AC%EC%8A%A4%ED%84%B0%20%EC%96%91%EC%8B%9D/3.png" style="max-width: 100%; height: auto;">
+<img src = "https://raw.githubusercontent.com/leech1215/PUMA-SW-AI/refs/heads/main/SW%26AI%20festival%20-%20%ED%8F%AC%EC%8A%A4%ED%84%B0%20%EC%96%91%EC%8B%9D/4.png" style="max-width: 100%; height: auto;">
+</div>
+<div id="codeContainer2">
+<h2>길이 맞추기 게임 코드</h2>
+<pre>
+<code class = "container">
+import tkinter as tk
+import random
+import math
+
+# 공통 변수
+game_started = 0
+drawn_points = []
+width, height = 1200, 640
+
+# 첫 번째 게임 변수
+target_length = 0
+multiplier = 0
+result_shown = False
+
+# 첫 번째 게임 초기 설정 및 시작 화면
+def start_screen():
+    canvas.create_rectangle(width // 3, height // 3, width // 3 * 2, height // 3 * 2, fill="#CCCCCC")
+    canvas.create_text(width // 2, height // 2, text="시작하다", font=("Arial", 50))
+
+# 첫 번째 게임 카운트다운 대체 함수: 게임 선택 인터페이스
+def game_select():
+    canvas.delete("all")
+
+    # 게임 선택 버튼
+    canvas.create_rectangle(width // 4 - 100, height // 2 - 50, width // 4 + 100, height // 2 + 50, fill="#CCCCCC")
+    canvas.create_text(width // 4, height // 2, text="첫 번째 게임", font=("Arial", 25))
+
+    canvas.create_rectangle(width // 4 * 3 - 100, height // 2 - 50, width // 4 * 3 + 100, height // 2 + 50, fill="#CCCCCC")
+    canvas.create_text(width // 4 * 3, height // 2, text="두 번째 게임", font=("Arial", 25))
+
+# 게임 선택 버튼 클릭 이벤트 처리
+def click_game_select(event):
+    if width // 4 - 100 &lt; event.x &lt; width // 4 + 100 and height // 2 - 50 &lt; event.y &lt; height // 2 + 50:
+        window.after(500, start_first_game)  # 0.5초 딜레이 후 첫 번째 게임 시작
+    elif width // 4 * 3 - 100 &lt; event.x &lt; width // 4 * 3 + 100 and height // 2 - 50 &lt; event.y &lt; height // 2 + 50:
+        window.after(500, start_second_game)  # 0.5초 딜레이 후 두 번째 게임 시작
+
+# 첫 번째 게임 시작
+def start_first_game():
+    global game_started, result_shown
+    canvas.delete("all")
+    draw_game_interface()
+    game_started = 1
+    result_shown = False
+    window.bind("&lt;B1-Motion&gt;", draw_line_first_game)
+    window.bind("&lt;ButtonRelease-1&gt;", calculate_result_first_game)
+
+# 첫 번째 게임 인터페이스 그리기
+def draw_game_interface():
+    global game_started, result_shown
+    canvas.create_line(width // 3, 0, width // 3, height)
+    game_started = 1
+    result_shown = False
+    show_phase()
+
+# 첫 번째 게임 선분과 배수 제시
+def show_phase():
+    global target_length, multiplier
+    p1 = (random.randint(width // 15, width // 9), random.randint(height // 5, height // 4))
+    p2 = (random.randint(width // 9 * 2, width // 15 * 4), random.randint(height // 4 * 3, height // 5 * 4))
+
+    canvas.create_line(p1, p2)
+    target_length = ((p1[0] - p2[0]) ** 2 + (p1[1] - p2[1]) ** 2) ** 0.5
+    canvas.create_text((p1[0] + p2[0]) // 2, (p1[1] + p2[1]) // 2 + 25, text="길이 : %.1f" % target_length, font=("Arial", 15))
+
+    multiplier = random.uniform(1, 10)
+    canvas.create_text(1125, 50, text="%.1f배" % multiplier, font=("Arial", 25))
+
+# 첫 번째 게임 드래그로 선 그리기
+def draw_line_first_game(event):
+    global drawn_points
+    if game_started == 1 and result_shown == False:
+        if len(drawn_points) > 0:
+            canvas.create_line(drawn_points[-1], (event.x, event.y))
+        drawn_points.append((event.x, event.y))
+
+# 첫 번째 게임 결과 계산
+def calculate_result_first_game(event):
+    global result_shown, drawn_points, target_length, multiplier
+    if game_started == 1 and len(drawn_points) > 1:
+        total_length = sum(
+            ((drawn_points[i][0] - drawn_points[i - 1][0]) ** 2 + (drawn_points[i][1] - drawn_points[i - 1][1]) ** 2) ** 0.5
+            for i in range(1, len(drawn_points))
+        )
+        drawn_length = total_length
+        required_length = target_length * multiplier
+        show_result_on_canvas(drawn_length, required_length)
+        drawn_points = []
+        result_shown = True
+        window.bind("&lt;Button-1&gt;", reset_game)
+
+# 두 번째 게임 시작
+def start_second_game():
+    global game_active, drawn_length, start_x, start_y, required_length, unit_length
+    # 두 번째 게임 변수
+    start_x = None
+    start_y = None
+    drawn_length = 0
+    game_active = False
+    unit_length = random.randint(250, 500)
+    required_length = random.randint(unit_length + 20, unit_length + 100)
+    canvas.delete("all")
+    drawn_length = 0
+    start_x, start_y = None, None
+    game_active = True
+    draw_unit_length()
+    draw_required_length()
+    result_label.config(text="")
+    window.bind("&lt;B1-Motion&gt;", draw_line_second_game)
+    window.bind("&lt;ButtonRelease-1&gt;", calculate_result_second_game)
+
+# 두 번째 게임 선 그리기
+def draw_line_second_game(event):
+    global start_x, start_y, drawn_length, game_active
+
+    if not game_active:
+        return
+
+    if start_x is None and start_y is None:
+        start_x, start_y = event.x, event.y
+    else:
+        x1, y1 = start_x, start_y
+        x2, y2 = event.x, event.y
+        canvas.create_line(x1, y1, x2, y2, fill="black", width=2)
+        drawn_length += math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+        start_x, start_y = x2, y2
+
+# 두 번째 게임 결과 계산
+def calculate_result_second_game(event):
+    global drawn_length, game_active, start_x, start_y
+    if game_active:
+        game_active = False
+        show_result_on_canvas(drawn_length, required_length)
+        start_x, start_y = None, None
+
+# 결과를 캔버스에 출력하는 함수
+def show_result_on_canvas(drawn_length, required_length):
+    difference = abs(drawn_length - required_length)
+    accuracy = abs((difference / required_length))  # 정확도를 소수로 계산
+
+    # 캔버스에 텍스트로 결과 출력
+    canvas.delete("all")
+    canvas.create_text(width // 2, height // 2, text=f"그린 길이: {int(drawn_length)}px, 요구된 길이: {int(required_length)}px\n"
+                                                        f"오차: {int(difference)}px, 정확도: {accuracy:.2f}", 
+                        font=("Arial", 25), fill="black")
+
+    # 정확도 출력 후 다시 한 번 클릭하면 초기 화면으로 이동
+    window.bind("&lt;Button-1&gt;", reset_game)
+
+# 두 번째 게임 단위 길이 표시
+def draw_unit_length():
+    canvas.create_line(10, 10, 10 + unit_length, 10, fill="red", width=3)
+    canvas.create_text(10 + unit_length + 20, 10, text=f"단위 길이: {unit_length}px", anchor="w", font=("Arial", 12))
+
+# 두 번째 게임 요구 길이 표시
+def draw_required_length():
+    canvas.create_text(200, 50, text=f"요구 길이: {required_length}px", anchor="center", font=("Arial", 14), fill="blue")
+
+# 첫 번째 게임 재설정
+def reset_game(event):
+    canvas.delete("all")
+    window.bind("&lt;Button-1&gt;", click_game_select)
+    game_select()
+
+# 초기 설정
+def setup():
+    global window, canvas, result_label
+    window = tk.Tk()
+    window.geometry("1200x640+100+100")
+    window.title("선 긋기 게임")
+    window.resizable(False, False)
+
+    canvas = tk.Canvas(window, width=1200, height=640, bd=2, bg="#FFFFFF", highlightthickness=0)
+    canvas.pack()
+
+    result_label = tk.Label(window, text="", font=("Arial", 12))
+    result_label.pack()
+
+# 메인 함수
+def main():
+    setup()
+    game_select()
+    window.bind("&lt;Button-1&gt;", click_game_select)
+
+main()
+window.mainloop()
+
+</code>
+<style>
+.container {
+height: 500px;
+padding : 20px;
+overflow: auto;
+}
+.container::-webkit-scrollbar {
+width: 10px;
+}
+.container::-webkit-scrollbar-thumb {
+background-color: #2f3542;
+border-radius: 10px;
+background-clip: padding-box;
+border: 2px solid transparent;
+}
+.container::-webkit-scrollbar-track {
+background-color: grey;
+border-radius: 10px;
+box-shadow: inset 0px 0px 5px white;
+}
+</style>
+<h2>정확한 정다각형 그리기 게임 코드</h2>
+<code class = "container">
+import tkinter as tk
+from tkinter import ttk
+import math
+import random
+
+# 전역 변수
+drawing = False
+drawn_points = []
+prev_x, prev_y = None, None
+unit_length = random.randint(50, 100)
+k = random.uniform(1.0, 2.5)  # 임의의 k 값 설정
+
+def display_unit_scale():
+    # 단위 길이 선 및 텍스트 표시
+    canvas.create_line(10, 380, 10 + unit_length, 380, fill='blue', width=2)
+    canvas.create_text(10 + unit_length // 2, 390, text=f"{unit_length} px", fill='blue')  # 기본 단위 길이 텍스트
+    canvas.create_text(10 + unit_length + 40, 390, text=f"k = {k:.2f}", fill='blue')  # k 값 표시
+
+def make_regular_polygon(x, y, initial_theta, n):
+    vertices = []
+    effective_unit_length = k * unit_length  # 실제 단위 길이로 사용
+    radius = effective_unit_length / (2 * math.sin(math.pi / n))
+    theta = initial_theta
+
+    for i in range(n):
+        rad = math.radians(theta)
+        new_x = int(x + radius * math.cos(rad))
+        new_y = int(y + radius * math.sin(rad))
+        vertices.append((new_x, new_y))
+        theta -= (360 / n)
+
+    return vertices
+
+# 평균제곱오차(MSE)를 계산하는 함수
+def calculate_mse(points, vertices):
+    error_sum = 0
+    edges = [(vertices[i], vertices[(i + 1) % len(vertices)]) for i in range(len(vertices))]
+    for i in range(0, len(points), 2):
+        px, py = points[i][0], points[i][1]
+        min_distance_sq = float('inf')
+        for (vx1, vy1), (vx2, vy2) in edges:
+            dx, dy = vx2 - vx1, vy2 - vy1
+            length_sq = dx**2 + dy**2
+            if length_sq != 0:
+                t = ((px - vx1) * dx + (py - vy1) * dy) / length_sq
+                if 0 &lt;= t &lt;= 1:
+                    closest_x = vx1 + t * dx
+                    closest_y = vy1 + t * dy
+                    distance_sq = (px - closest_x) ** 2 + (py - closest_y) ** 2
+                else:
+                    distance_sq = min(
+                        (px - vx1) ** 2 + (py - vy1) ** 2,
+                        (px - vx2) ** 2 + (py - vy2) ** 2
+                    )
+            else:
+                distance_sq = (px - vx1) ** 2 + (py - vy1) ** 2
+            
+            min_distance_sq = min(min_distance_sq, distance_sq)
+        
+        error_sum += min_distance_sq
+    
+    mse = error_sum / len(points)
+    return mse
+
+# 최적의 정다각형을 찾고 유사도 점수를 업데이트하는 함수
+def fun(points, n):
+    min_mse = float('inf')
+    best_vertices = []
+    li_x = [p[0] for p in points]
+    li_y = [p[1] for p in points]
+    min_x, max_x = min(li_x), max(li_x)
+    min_y, max_y = min(li_y), max(li_y)
+    scale_x = int((max_x - min_x) * 0.3)
+    scale_y = int((max_y - min_y) * 0.3)
+    print(f'점 개수: {len(points)}')
+    
+    progress_bar["value"] = 0
+    root.update_idletasks()  # UI 업데이트
+    
+    total_steps = ((max_x - min_x - 2 * scale_x) // 5) * ((max_y - min_y - 2 * scale_y) // 5)
+    step_count = 0
+
+    for x in range(min_x + scale_x, max_x - scale_x, 5):
+        for y in range(min_y + scale_y, max_y - scale_y, 5):
+            for theta in range(0, 180, 6):
+                vertices = make_regular_polygon(x, y, theta, n)
+                mse = calculate_mse(points, vertices)
+                if mse &lt; min_mse:
+                    min_mse = mse
+                    best_vertices = vertices
+
+            step_count += 1
+            progress = (step_count / total_steps) * 100
+            progress_bar["value"] = progress
+            root.update_idletasks()  # UI 업데이트
+
+    for i in range(len(best_vertices)):
+        x1, y1 = best_vertices[i]
+        x2, y2 = best_vertices[(i + 1) % len(best_vertices)]
+        canvas.create_line(x1, y1, x2, y2, fill='red')
+
+    similarity_score = calculate_similarity_score(min_mse, unit_length)
+    score_label.config(text=f"점수: {similarity_score:.2f}")
+    progress_bar["value"] = 100  # 작업 완료 표시
+
+    print(f"최적의 MSE: {min_mse}")
+    print(f"MSE/단위 길이: {min_mse / unit_length}")
+    print(f"유사도 점수: {similarity_score}")
+
+def calculate_similarity_score(mse, unit_length, k=0.03, a=5):
+    return 100 * (a ** (-mse / (k*(unit_length**2))))
+
+def start_drawing(event):
+    global drawing, prev_x, prev_y
+    drawing = True
+    prev_x, prev_y = event.x, event.y  
+    drawn_points.append((event.x, event.y))
+
+def stop_drawing():
+    global drawing
+    drawing = False
+    print("그림 데이터:", drawn_points)
+
+def draw(event):
+    global prev_x, prev_y
+    if drawing and prev_x is not None and prev_y is not None:
+        drawn_points.append((event.x, event.y))
+        canvas.create_line(prev_x, prev_y, event.x, event.y, fill='black')
+        prev_x, prev_y = event.x, event.y
+
+def clear_canvas():
+    global drawn_points, prev_x, prev_y, unit_length, k
+    canvas.delete("all")  
+    drawn_points.clear()  
+    unit_length = random.randint(50, 100)
+    k = random.uniform(1.0, 2.5)
+    prev_x, prev_y = None, None
+    display_unit_scale()
+    score_label.config(text="점수: ")
+    progress_bar["value"] = 0
+    print("캔버스와 리스트가 초기화되었습니다.")
+
+# tkinter 창 설정
+root = tk.Tk()
+root.title("Drawing App")
+
+canvas = tk.Canvas(root, bg='white', width=400, height=400)
+canvas.pack()
+
+display_unit_scale()
+
+n_label = tk.Label(root, text="Enter n:")
+n_label.pack(side=tk.LEFT, padx=5, pady=10)
+
+n_entry = tk.Entry(root)
+n_entry.pack(side=tk.LEFT, padx=5, pady=10)
+
+fun_button = tk.Button(root, text="점수확인", command=lambda: fun(drawn_points, int(n_entry.get())))
+fun_button.pack(side=tk.LEFT, padx=5, pady=10)
+
+clear_button = tk.Button(root, text="초기화", command=clear_canvas)
+clear_button.pack(side=tk.LEFT, padx=5, pady=10)
+
+score_label = tk.Label(root, text="점수: ")
+score_label.pack(side=tk.LEFT, padx=5, pady=10)
+
+# 진행 표시줄
+progress_bar = ttk.Progressbar(root, orient="horizontal", length=200, mode="determinate")
+progress_bar.pack(pady=10)
+
+canvas.bind("&lt;Button-1&gt;", start_drawing)
+canvas.bind("&lt;B1-Motion&gt;", draw)
+canvas.bind("&lt;ButtonRelease-1&gt;", lambda event: setattr(globals(), 'drawing', False))
+
+root.mainloop()    
+
+</code>
+<style>
+.container {
+height: 500px;
+padding : 20px;
+}
+.container::-webkit-scrollbar {
+width: 10px;
+}
+.container::-webkit-scrollbar-thumb {
+background-color: #2f3542;
+border-radius: 10px;
+background-clip: padding-box;
+border: 2px solid transparent;
+}
+.container::-webkit-scrollbar-track {
+background-color: grey;
+border-radius: 10px;
+box-shadow: inset 0px 0px 5px white;
+}
+</style>
+<h2>상수 카운트다운 게임 코드</h2>
+<code class = "container">
+    import tkinter as tk
+    import math
+    import re
+    
+    # 상수 값 설정
+    constants = {
+        'gamma': 0.5772156649,
+        'pi': math.pi,
+        'e': math.e,
+    }
+    
+    class RoundButton(tk.Canvas):
+        def __init__(self, master, text, command=None, width=150, height=50, corner_radius=20, **kwargs):
+            super().__init__(master, width=width, height=height, **kwargs)
+            self.command = command
+            self.corner_radius = corner_radius
+            self.width = width
+            self.height = height
+            self.bg_color = "navy"
+            self.border_color = "black"
+            self.disabled_color = "gray"
+    
+            # 둥근 모서리 버튼 그리기
+            self.create_rounded_rect(0, 0, width, height, corner_radius, outline=self.border_color, fill=self.bg_color)
+            self.text_id = self.create_text(width // 2, height // 2, text=text, fill="white", font=("Helvetica", 14))
+    
+            # 클릭 이벤트 연결
+            self.bind("&lt;Button-1&gt;", self.on_click)
+    
+        def create_rounded_rect(self, x1, y1, x2, y2, r, **kwargs):
+            """둥근 모서리 사각형 생성"""
+            self.create_arc(x1, y1, x1 + 2*r, y1 + 2*r, start=90, extent=90, **kwargs)  # 왼쪽 위
+            self.create_arc(x2 - 2*r, y1, x2, y1 + 2*r, start=0, extent=90, **kwargs)   # 오른쪽 위
+            self.create_arc(x2 - 2*r, y2 - 2*r, x2, y2, start=270, extent=90, **kwargs) # 오른쪽 아래
+            self.create_arc(x1, y2 - 2*r, x1 + 2*r, y2, start=180, extent=90, **kwargs) # 왼쪽 아래
+            self.create_rectangle(x1 + r, y1, x2 - r, y2, **kwargs)  # 수평 사각형
+            self.create_rectangle(x1, y1 + r, x2, y2 - r, **kwargs)  # 수직 사각형
+    
+        def on_click(self, event):
+            if self.command:
+                self.command()
+    
+        def set_disabled(self):
+            """버튼 비활성화 시 색상 변경"""
+            self.itemconfig(self.text_id, fill="gray")
+            self.create_rounded_rect(0, 0, self.width, self.height, self.corner_radius, outline=self.border_color, fill=self.disabled_color)
+            self.unbind("&lt;Button-1&gt;")  # 클릭 이벤트 비활성화
+    
+    class MathGame:
+        def __init__(self, master):
+            self.master = master
+            self.master.title("최적 수식 찾기")
+            self.master.geometry("950x750")
+    
+            self.reset_game()  # 초기화 메서드 호출
+            self.create_widgets()
+            self.update_timer()
+    
+        def reset_game(self):
+            self.selected_constant = None
+            self.target_value = None
+            self.best_expr = None
+            self.best_value = None
+            self.best_error_rate = float('inf')
+            self.remaining_time = 60
+            self.timer_running = False
+    
+        def create_widgets(self):
+            self.constant_label = tk.Label(self.master, text="상수 선택:", font=("Helvetica", 16))
+            self.constant_label.pack(pady=10)
+    
+            # Dropdown for selecting constant
+            self.constant_var = tk.StringVar(value='gamma')
+            self.constant_dropdown = tk.OptionMenu(self.master, self.constant_var, *constants.keys())
+            self.constant_dropdown.config(font=("Helvetica", 14))
+            self.constant_dropdown.pack(pady=10)
+    
+            # 커스텀 버튼 생성
+            self.select_button = RoundButton(self.master, text="선택", command=self.select_constant)
+            self.select_button.pack(pady=10)
+    
+            self.constant_value_label = tk.Label(self.master, text="", font=("Helvetica", 16))
+            self.constant_value_label.pack(pady=10)
+    
+            self.timer_label = tk.Label(self.master, text="남은 시간: 60초", font=("Helvetica", 20))
+            self.timer_label.pack(pady=10)
+    
+            # 수식 입력란
+            self.expression_var = tk.StringVar()
+            self.expression_entry = tk.Entry(self.master, textvariable=self.expression_var, font=("Helvetica", 16), width=30)
+            self.expression_entry.pack(pady=10)
+            self.expression_entry.bind("&lt;Return&gt;", self.evaluate_expression)
+    
+            self.result_label = tk.Label(self.master, text="결과:", font=("Helvetica", 16))
+            self.result_label.pack(pady=10)
+    
+            self.result_value_label = tk.Label(self.master, text="", font=("Helvetica", 14))
+            self.result_value_label.pack(pady=10)
+    
+            self.error_label = tk.Label(self.master, text="오차율:", font=("Helvetica", 16))
+            self.error_label.pack(pady=10)
+    
+            self.error_value_label = tk.Label(self.master, text="", font=("Helvetica", 14))
+            self.error_value_label.pack(pady=10)
+    
+            self.best_expr_label = tk.Label(self.master, text="최적 수식:", font=("Helvetica", 16))
+            self.best_expr_label.pack(pady=10)
+    
+            self.best_expr_value_label = tk.Label(self.master, text="", font=("Helvetica", 14), wraplength=800)
+            self.best_expr_value_label.pack(pady=10)
+    
+            # 다시하기 버튼 생성
+            self.restart_button = RoundButton(self.master, text="다시하기", command=self.restart_game)
+            self.restart_button.pack(pady=10)
+    
+        def select_constant(self):
+            constant_name = self.constant_var.get().strip()
+            if constant_name in constants:
+                self.selected_constant = constant_name
+                self.target_value = constants[constant_name]
+                self.constant_value_label.config(text=f"{constant_name}의 값: {self.target_value:.6f}")
+                self.timer_running = True  # 타이머 시작
+                self.remaining_time = 60
+                self.update_timer()
+            else:
+                self.constant_value_label.config(text="잘못된 상수입니다. 다시 선택해주세요.")
+    
+        def evaluate_expression(self, event):
+            if self.selected_constant is None:
+                self.result_value_label.config(text="상수를 선택해주세요.")
+                return
+            
+            user_expr = self.expression_var.get().strip()
+            self.expression_var.set("")  # 수식 입력란 초기화
+    
+            if not self.validate_expression(user_expr):
+                self.result_value_label.config(text="잘못된 수식입니다. 1,2,3,4만 사용하세요.")
+                return
+    
+            try:
+                allowed_functions = {
+                    'sin': lambda x: math.sin(math.radians(x)),
+                    'cos': lambda x: math.cos(math.radians(x)),
+                    'tan': lambda x: math.tan(math.radians(x)),
+                    'exp': math.exp,
+                    'log': math.log,
+                    'ln': math.log,
+                    'sqrt': math.sqrt,
+                    'pi': math.pi,
+                    'e': math.e,
+                    'gamma': 0.5772156649,
+                }
+                result = eval(user_expr, {"__builtins__": None}, allowed_functions)
+                error_rate = abs(self.target_value - result) / abs(self.target_value) * 100
+    
+                self.result_value_label.config(text=f"{user_expr} = {result:.6f}")
+                self.error_value_label.config(text=f"오차율: {error_rate:.3f}%")
+    
+                if error_rate < self.best_error_rate:
+                    self.best_expr = user_expr
+                    self.best_value = result
+                    self.best_error_rate = error_rate
+                    self.best_expr_value_label.config(text=f"{self.best_expr} = {self.best_value:.6f} (오차율: {self.best_error_rate:.3f}%)")
+            except Exception:
+                self.result_value_label.config(text="잘못된 수식입니다. 다른 수식을 입력해주세요.")
+    
+        def validate_expression(self, expr):
+            numbers_in_expr = re.findall(r'\d+', expr)
+            for num in numbers_in_expr:
+                if num not in ['1', '2', '3', '4']:
+                    return False
+            return True
+    
+        def update_timer(self):
+            if self.timer_running and self.remaining_time > 0:
+                self.timer_label.config(text=f"남은 시간: {self.remaining_time}초")
+                self.remaining_time -= 1
+                if self.remaining_time &lt;= 10:
+                    self.timer_label.config(fg="red")
+                self.master.after(1000, self.update_timer)
+            elif self.remaining_time == 0:
+                self.end_game()
+    
+        def end_game(self):
+            end_window = tk.Toplevel(self.master)
+            end_window.title("게임 종료")
+            end_window.geometry("400x200")
+    
+            x = self.master.winfo_x() + (self.master.winfo_width() // 2) - 200
+            y = self.master.winfo_y() + (self.master.winfo_height() // 2) - 100
+            end_window.geometry(f"400x200+{x}+{y}")
+    
+            end_message = tk.Label(end_window, text="시간이 종료되었습니다!", font=("Helvetica", 16))
+            end_message.pack(pady=10)
+    
+            best_expr_label = tk.Label(end_window, text=f"최적 수식: {self.best_expr} = {self.best_value:.6f} (오차율: {self.best_error_rate:.3f}%)", font=("Helvetica", 14))
+            best_expr_label.pack(pady=10)
+    
+        def restart_game(self):
+            self.reset_game()
+            self.constant_value_label.config(text="")
+            self.result_value_label.config(text="")
+            self.error_value_label.config(text="")
+            self.best_expr_value_label.config(text="")
+            self.timer_label.config(text="남은 시간: 60초", fg="black")
+            self.timer_running = False
+            self.remaining_time = 60
+    
+    # 실행
+    root = tk.Tk()
+    game = MathGame(root)
+    root.mainloop()       
+
+</code>
+<style>
+.container {
+height: 500px;
+padding : 20px;
+}
+.container::-webkit-scrollbar {
+width: 10px;
+}
+.container::-webkit-scrollbar-thumb {
+background-color: #2f3542;
+border-radius: 10px;
+background-clip: padding-box;
+border: 2px solid transparent;
+}
+.container::-webkit-scrollbar-track {
+background-color: grey;
+border-radius: 10px;
+box-shadow: inset 0px 0px 5px white;
+}
+</style>
+</pre>
+</div>
+</body>
+</html>
